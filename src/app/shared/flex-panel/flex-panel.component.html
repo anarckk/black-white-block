@@ -1,0 +1,5 @@
+<div class="panel-wrap" #panel>
+  <ng-container *ngFor="let row of rowArr;let i=index;">
+    <bw-block *ngFor="let a of arr;let j=index;" [row]="i" [col]="j"></bw-block>
+  </ng-container>
+</div>
