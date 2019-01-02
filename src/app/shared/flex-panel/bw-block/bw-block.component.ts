@@ -1,86 +1,53 @@
 /**
  * Created by kkcra on 2019/1/1
  */
-import { AfterViewChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FlexPanelService }                                                                       from '../flex-panel.service';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges
+}                from '@angular/core';
+import { pixel } from '../game-life.const';
 
 @Component({
-  selector: 'bw-block',
-  template: `
-    <div [ngStyle]="style" [style.backgroundColor]='color' (click)="setColor(1)">
-    </div>
-  `,
-  styles: [`
-    div {
-      font-size: 12px;
-    }
-  `],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'bw-block',
+    template: `
+        <div [ngStyle]="style" [style.backgroundColor]='color' (click)="click()">
+        </div>
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BwBlockComponent implements OnInit, AfterViewChecked {
-  around = [];
-  @Input() row;
-  @Input() col;
-  style = {
-    'width': 5 + 'px',
-    'height': 5 + 'px',
-    'border': '1px solid #9e9e9e',
-  };
-  color: '#fff' | '#000' = '#fff';
-  lastLen;
-  lastAlive: boolean;
+export class BwBlockComponent implements OnChanges {
+    @Input() value: 0 | 1;
+    @Output() valueChange = new EventEmitter();
+    readonly style = {
+        'width': pixel + 'px',
+        'height': pixel + 'px',
+        'border': '1px solid #9e9e9e',
+    };
+    color: '#fff' | '#000' = '#fff';
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private panelSer: FlexPanelService,
-  ) { }
+    constructor() { }
 
-  ngOnInit(): void {
-  }
-
-  ngAfterViewChecked(): void {
-    if (this.panelSer.blocks)
-      if (!this.lastLen || this.lastLen !== this.panelSer.blocks.length) {
-        this.lastLen = this.panelSer.blocks.length;
-        this.setAround();
-        console.count('set around');
-      }
-  }
-
-  setColor(type: 0 | 1) {
-    this.lastAlive = this.isAlive();
-    if (type === 0) {
-      this.color = '#fff';
-    } else if (type === 1) {
-      this.color = '#000';
+    setColor(value: 0 | 1) {
+        if (value === 1) this.color = '#000';
+        else if (value === 0) this.color = '#fff';
     }
-    this.cd.detectChanges();
-  }
 
-  isAlive(): boolean {
-    return this.color === '#000';
-  }
-
-  update() {
-    const whiteNum = this.around.filter(comp => comp && comp.lastAlive).length;
-    if (whiteNum === 3) {
-      this.setColor(1);
-    } else if (whiteNum === 2) {
-    } else {
-      this.setColor(0);
+    ngOnChanges(changes: SimpleChanges): void {
+        this.setColor(this.value);
     }
-  }
 
-  setAround() {
-    this.around = [
-      this.panelSer.get(this.row - 1, this.col - 1),
-      this.panelSer.get(this.row - 1, this.col),
-      this.panelSer.get(this.row - 1, this.col + 1),
-      this.panelSer.get(this.row, this.col - 1),
-      this.panelSer.get(this.row, this.col + 1),
-      this.panelSer.get(this.row + 1, this.col - 1),
-      this.panelSer.get(this.row + 1, this.col),
-      this.panelSer.get(this.row + 1, this.col + 1),
-    ];
-  }
+    click() {
+        if (this.value === 0) {
+            this.value = 1;
+        } else {
+            this.value = 0;
+        }
+        this.setColor(this.value);
+        this.valueChange.emit(this.value);
+    }
 }

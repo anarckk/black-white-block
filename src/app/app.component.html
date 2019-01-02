@@ -1,11 +1,14 @@
 <div style="padding-bottom: 16px;">
-  <span>总格子数:</span><span>{{len}};</span><span>状态:{{isStart ? '进行中' : '停止'}};</span>
-  <span>已计算:{{num}}次;</span>
-  <div>
-    <button (click)="start()">start</button>
-    <button (click)="pause()">stop</button>
-    <button (click)="reset()">reset</button>
-  </div>
+    <span>总格子数:</span><span>{{len}};</span><span>状态:{{isStart ? '进行中' : '停止'}};</span>
+    <span>已计算:{{num}}次;</span>
+    <span>aliveLen:{{aliveLen}}个;</span>
+    <div>
+        <button (click)="start()">start</button>
+        <button (click)="pause()">stop</button>
+        <button (click)="update()">步进</button>
+        <button (click)="reset()">reset</button>
+        <button (click)="clear()">clear</button>
+    </div>
 </div>
 <flex-panel></flex-panel>
 

@@ -8,25 +8,25 @@ import { FlexPanelComponent }   from './flex-panel/flex-panel.component';
 import { BwBlockComponent }     from './flex-panel/bw-block/bw-block.component';
 
 const Export_Components = [
-  CanvasPanelComponent,
-  FlexPanelComponent,
+    CanvasPanelComponent,
+    FlexPanelComponent,
 ];
 
 const Inner_Components = [
-  BwBlockComponent,
+    BwBlockComponent,
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
-  declarations: [
-    ...Export_Components,
-    ...Inner_Components,
-  ],
-  exports: [
-    ...Export_Components,
-  ],
+    imports: [
+        CommonModule,
+    ],
+    declarations: [
+        ...Export_Components,
+        ...Inner_Components,
+    ],
+    exports: [
+        ...Export_Components,
+    ],
 })
 export class SharedModule {
 }
